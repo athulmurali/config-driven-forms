@@ -1,4 +1,6 @@
 import React from "react";
+import { DevTool } from "@hookform/devtools";
+
 import { useForm } from "react-hook-form";
 import { connect, Provider } from "react-redux";
 import { store } from "./reduxStore";
@@ -14,7 +16,8 @@ const ConfigDrivenForm = ({ user, updateUser }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    control,
+    formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
@@ -29,7 +32,7 @@ const ConfigDrivenForm = ({ user, updateUser }) => {
   return (
     <>
       <h2>Render Count: {renderCount}</h2>
-
+      <DevTool placement="top-right" control={control} />
       <form onSubmit={handleSubmit(onSubmit)}>
         {formFields.map((field) => {
           const validationRules = generateValidationRules(field.validators);
@@ -61,11 +64,11 @@ const ConfigDrivenForm = ({ user, updateUser }) => {
 
 // Connect ConfigDrivenForm to Redux store
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateUser: (data) => dispatch(updateUser(data))
+  updateUser: (data) => dispatch(updateUser(data)),
 });
 
 const ConnectedConfigDrivenForm = connect(
